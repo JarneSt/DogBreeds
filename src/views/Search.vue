@@ -1,10 +1,14 @@
 <template>
-$END$
+<div>
+  <SearchComponent/>
+</div>
 </template>
 
 <script>
+import SearchComponent from "../components/SearchComponent";
 export default {
-name: "Search"
+  name: "Search",
+  components: {SearchComponent}
 }
 </script>
 
