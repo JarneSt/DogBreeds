@@ -1,32 +1,34 @@
 <template>
 <div>
   <div class="form">
-    <select @change="breedSearch" class="dog-selector" >
-      <option :id="breed" v-for="breed in breedArray">{{ breed }}</option>
+    <select @change="breedSearch" v-model="selectedValue" class="dog-selector" >
+      <option :id="breed" v-for="breed in breedArray" :value="breed">{{ breed }}</option>
     </select>
     <button @click="breedSearch">Renew</button>
   </div>
-
   <div class="container px-4">
     <div class="row gx-5">
       <div v-for="img in searchArray" class="imgalign">
         <div class="col">
           <div class="p-3 border imgbg">
             <img :alt="img.name" :src="img.image">
-            <input style="padding: 5px; margin-top: 20px" type="button" @click="downloadImage(img.image)" value="Download Image">
+            <input style="padding: 5px; margin-top: 20px" type="button" @click="downloadImage(img.image)" value="Download">
           </div>
         </div>
       </div>
     </div>
   </div>
-
-
 </div>
 </template>
 
 <script>
 export default {
   name: "SearchComponent",
+  data() {
+    return {
+      selectedValue : ''
+    }
+  },
   methods : {
     kpHandler(e){
       if (e.key === 'Enter')
@@ -37,9 +39,7 @@ export default {
       const imageBlog = await image.blob()
       const imageURL = URL.createObjectURL(imageBlog)
 
-
       let index = this.$store.state.searchArr.findIndex(x => x.image === imageSrc);
-      console.log(this.$store.state.searchArr);
 
       //Download image
       const link = document.createElement('a')
@@ -52,9 +52,8 @@ export default {
     async breedSearch(){
       this.$store.state.searchArr = [];
 
-      let userinput = document.querySelector('.dog-selector').value;
-
-      let dogUrl = `https://dog.ceo/api/breed/${userinput}/images/random`;
+      let userInput = this.selectedValue;
+      let dogUrl = `https://dog.ceo/api/breed/${userInput}/images/random`;
       let dogObject;
 
       this.$store.state.loadingGifShow = true;
@@ -84,7 +83,6 @@ export default {
 
       let data = Array.from(new Set(this.$store.state.searchArr.map(JSON.stringify))).map(JSON.parse);
 
-      this.$store.state.searchArr = [];
       this.$store.state.searchArr = data;
 
 
@@ -117,6 +115,9 @@ export default {
 
       this.$store.state.loadingGifShow = false;
     }
+
+    this.selectedValue = 'affenpinscher';
+    await this.breedSearch();
   },
   computed :{
     breedArray(){

@@ -51,7 +51,6 @@ export default {
 
     if (this.$store.state.dogsArr.length <= 0){
       this.$store.state.loadingGifShow = true;
-
       for (let i = 0; i < 50; i++)
       {
         try {
@@ -66,10 +65,10 @@ export default {
           console.log('Connection error');
         }
 
+        console.log(dogObject);
         let dogname = dogObject.message.substr(30,20).split('/');
         let dog = {
-          name : dogname[0].charAt(0).toUpperCase() + dogname[0].slice(1)
-          ,
+          name : dogname[0].charAt(0).toUpperCase() + dogname[0].slice(1),
           image : dogObject.message
         }
 
@@ -118,6 +117,13 @@ h1 {
 
 button {
   background: crimson;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  margin-bottom: 1rem;
 }
 
 @media only screen and (max-width: 1000px){
