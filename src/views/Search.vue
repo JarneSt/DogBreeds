@@ -1,5 +1,6 @@
 <template>
 <div>
+
   <SearchComponent/>
 </div>
 </template>
@@ -8,7 +9,7 @@
 import SearchComponent from "../components/SearchComponent";
 export default {
   name: "Search",
-  components: {SearchComponent}
+  components: {SearchComponent},
 }
 </script>
 

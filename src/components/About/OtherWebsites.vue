@@ -42,7 +42,7 @@ export default {
         {
           websitename : "Dogs",
           url : "bit.ly/3jPtCRf",
-          description : "Checkout most common dog breeds and show pictures for the specific searched breed",
+          description : "Checkout most common dog breeds and see pictures for the specific searched breed",
           icon : "<i id=\"dogIcon\" class=\"fas fa-dog\"></i>",
           previewImg: "https://media.discordapp.net/attachments/852262452291960842/862682744650727464/Schermafbeelding_2021-07-08_151249.png?width=688&height=676"
         },

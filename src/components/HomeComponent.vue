@@ -33,12 +33,6 @@
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-    <!--
-    <div class="dogImgs" v-for="dog in dogs">
-      <h2>{{dog.name}}</h2>
-      <img :src="dog.image">
-    </div>
-    -->
   </div>
 </template>
 
@@ -46,6 +40,8 @@
 export default {
   name: "HomeComponent",
   async mounted(){
+
+    //FIRST
     let dogUrl = 'https://dog.ceo/api/breeds/image/random';
     let dogObject;
 
@@ -65,7 +61,7 @@ export default {
           console.log('Connection error');
         }
 
-        console.log(dogObject);
+        //console.log(dogObject);
         let dogname = dogObject.message.substr(30,20).split('/');
         let dog = {
           name : dogname[0].charAt(0).toUpperCase() + dogname[0].slice(1),
@@ -77,7 +73,28 @@ export default {
 
       this.$store.state.loadingGifShow = false;
 
-      console.table('dogs array',this.$store.state.dogsArr);
+      //console.table('dogs array',this.$store.state.dogsArr);
+
+
+
+      //THEN
+
+      let breedInfoUrl = 'https://api.thedogapi.com/v1/breeds/';
+      let breedInfoObject = [];
+
+      try {
+        let response = await fetch(breedInfoUrl, {
+          method : 'GET'
+        });
+
+        if (response.status === 200) {
+          breedInfoObject = await response.json();
+          console.log(breedInfoObject);
+        }
+      } catch {
+        console.log('Connection error');
+      }
+
     }
   },
   computed : {
@@ -120,7 +137,7 @@ button {
 }
 
 img {
-  max-width: 100%;
+  max-width: 300px;
   height: auto;
   max-height: 300px;
   margin-bottom: 1rem;
