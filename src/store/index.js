@@ -5,7 +5,7 @@ export default createStore({
     dogsArr : [],
     loadingGifShow : false,
     breedArr : [],
-    searchArr : []
+    searchArr : [],
   },
   mutations: {
   },

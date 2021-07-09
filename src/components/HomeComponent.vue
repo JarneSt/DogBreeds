@@ -19,7 +19,7 @@
         </div>
         <div class="carousel-item dogImgs" v-for="dog in dogs">
           <h1>{{dog.name}}</h1>
-          <img :src="dog.image" class="d-block w-100"/>
+          <img :src="dog.image.url" class="d-block w-100"/>
         </div>
       </div>
       <button class="carousel-control-prev" type="button" title="Previous dog" data-bs-target="#carouselExampleIndicators"
@@ -39,64 +39,6 @@
 <script>
 export default {
   name: "HomeComponent",
-  async mounted(){
-
-    //FIRST
-    let dogUrl = 'https://dog.ceo/api/breeds/image/random';
-    let dogObject;
-
-    if (this.$store.state.dogsArr.length <= 0){
-      this.$store.state.loadingGifShow = true;
-      for (let i = 0; i < 50; i++)
-      {
-        try {
-          let response = await fetch(dogUrl, {
-            method : 'GET'
-          });
-
-          if (response.status === 200) {
-            dogObject = await response.json();
-          }
-        } catch {
-          console.log('Connection error');
-        }
-
-        //console.log(dogObject);
-        let dogname = dogObject.message.substr(30,20).split('/');
-        let dog = {
-          name : dogname[0].charAt(0).toUpperCase() + dogname[0].slice(1),
-          image : dogObject.message
-        }
-
-        this.$store.state.dogsArr.push(dog);
-      }
-
-      this.$store.state.loadingGifShow = false;
-
-      //console.table('dogs array',this.$store.state.dogsArr);
-
-
-
-      //THEN
-
-      let breedInfoUrl = 'https://api.thedogapi.com/v1/breeds/';
-      let breedInfoObject = [];
-
-      try {
-        let response = await fetch(breedInfoUrl, {
-          method : 'GET'
-        });
-
-        if (response.status === 200) {
-          breedInfoObject = await response.json();
-          console.log(breedInfoObject);
-        }
-      } catch {
-        console.log('Connection error');
-      }
-
-    }
-  },
   computed : {
     dogs(){
       return this.$store.state.dogsArr;
