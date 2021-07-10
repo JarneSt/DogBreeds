@@ -5,44 +5,28 @@
     <select @change="breedOtherImages" v-model="selectedValue" class="dog-selector" >
       <option :id="breed" v-for="breed in breedArray" :value="breed">{{ breed }}</option>
     </select>
-  </div>
-
-  <div class="cardDiv">
-    <div v-if="dogObject.length > 0" class="card" style="width: 18rem;">
-      <img :src="dogObject[0].image.url" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h2 class="card-title"><b>{{dogObject[0].name}}</b></h2>
-        <p class="card-text">{{dogObject[0].description}}</p>
-        <h5 class="card-title">Temperament</h5>
-        <p class="card-text">{{dogObject[0].temperament}}</p>
-        <h5 class="card-title">Life Span</h5>
-        <p class="card-text">{{dogObject[0].life_span}}</p>
-        <h5 class="card-title">Weight</h5>
-        <p class="card-text">{{dogObject[0].weight.metric}} kg</p>
-        <h5 class="card-title">Height</h5>
-        <p class="card-text">{{dogObject[0].height.metric}} cm</p>
-        <div class="d-flex flex-column dogBtns">
-          <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">More Pictures</a>
-          <a href="#" class="btn btn-danger">More Information</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--
-  <div class="container px-4">
-    <div class="row gx-5">
-      <div v-for="img in searchArray" class="imgalign">
-        <div class="col">
-          <div class="p-3 border imgbg">
-            <img :alt="img.name" :src="img.image">
-            <input style="padding: 5px; margin-top: 20px" type="button" @click="downloadImage(img.image)" value="Download">
+    <div class="cardDiv">
+      <div v-if="dogObject.length > 0" class="card" style="width: 18rem;">
+        <img :src="dogObject[0].image.url" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h2 class="card-title"><b>{{dogObject[0].name}}</b></h2>
+          <p class="card-text">{{dogObject[0].description}}</p>
+          <h5 class="card-title">Temperament</h5>
+          <p class="card-text">{{dogObject[0].temperament}}</p>
+          <h5 class="card-title">Life Span</h5>
+          <p class="card-text">{{dogObject[0].life_span}}</p>
+          <h5 class="card-title">Weight</h5>
+          <p class="card-text">{{dogObject[0].weight.metric}} kg</p>
+          <h5 class="card-title">Height</h5>
+          <p class="card-text">{{dogObject[0].height.metric}} cm</p>
+          <div class="d-flex flex-column dogBtns">
+            <a v-if="searchArray.length > 0" href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">More Pictures</a>
+            <a href="#" class="btn btn-danger">More Information</a>
           </div>
         </div>
       </div>
     </div>
-    <button @click="breedOtherImages">Renew</button>
   </div>
-  -->
 
 
   <!-- Modal -->
@@ -50,7 +34,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">More pictures of {{dogObject[0].name}}</h5>
+          <h5 class="modal-title" id="exampleModalLabel">More pictures</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -85,7 +69,8 @@ export default {
   data() {
     return {
       selectedValue : 'Affenpinscher',
-      dogObject : {}
+      dogObject : {},
+      searchArray : []
     }
   },
   methods : {
@@ -120,7 +105,7 @@ export default {
       /**
        * CLEARING SEARCH ARRAY SO WE DO NOT APPEND RESULTS OF PREVIOUS SEARCH RESULTS
        */
-      this.$store.state.searchArr = [];
+      this.searchArray = [];
 
 
 
@@ -146,24 +131,23 @@ export default {
             dogObject = await response.json();
           }
 
-          console.log(dogObject);
           if (dogObject !== null){
             let dogname = dogObject.message.substr(30,20).split('/');
             let dog = {
               name : dogname[0].charAt(0).toUpperCase() + dogname[0].slice(1),
               image : dogObject.message
             }
-            this.$store.state.searchArr.push(dog);
+            this.searchArray.push(dog);
           }
         }
 
-        let data = Array.from(new Set(this.$store.state.searchArr.map(JSON.stringify))).map(JSON.parse);
-        this.$store.state.searchArr = data;
+        let data = Array.from(new Set(this.searchArray.map(JSON.stringify))).map(JSON.parse);
+        this.searchArray = data;
       }
       this.$store.state.loadingGifShow = false;
 
 
-
+      console.log('searchArray',this.searchArray);
 
     }
   },
@@ -225,9 +209,6 @@ export default {
     breedArray(){
       return this.$store.state.breedArr;
     },
-    searchArray(){
-      return this.$store.state.searchArr;
-    },
     dogsArray(){
       return this.$store.state.dogsArr;
     }
@@ -241,8 +222,17 @@ export default {
   margin-bottom: auto;
 }
 
+.modal-dialog {
+  max-width: 85%;
+}
+
 .dogBtns a {
   margin-top: 5px;
+}
+
+.dog-selector {
+  width: 34em;
+  text-align: center;
 }
 
 #headImgDog {

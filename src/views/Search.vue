@@ -1,6 +1,8 @@
 <template>
 <div>
   <SearchComponent/>
+  <SearchComponent/>
+  <SearchComponent/>
 </div>
 </template>
 
@@ -56,5 +58,9 @@ export default {
 </script>
 
 <style scoped>
-
+div {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 </style>
