@@ -1,16 +1,32 @@
 <template>
+  <div class="container px-4 inputDiv">
+    <div class="row gx-5">
+      <div class="col">
+        <div class="p-2 border bg-light">
+          <h3 id="breedQuestion">How many breeds do you want to compare?</h3>
+          <input id="inputNum" type="number" v-model.number="inputNumber">
+        </div>
+      </div>
+    </div>
+  </div>
 <div>
-  <SearchComponent/>
-  <SearchComponent/>
-  <SearchComponent/>
+  <div v-if="inputNumber > 0" v-for="n in inputNumber">
+    <SearchComponent/>
+  </div>
 </div>
 </template>
 
 <script>
 import SearchComponent from "../components/SearchComponent";
+
 export default {
   name: "Search",
   components: {SearchComponent},
+  data(){
+    return {
+      inputNumber : 3
+    }
+  },
   async mounted(){
     let breedInfoObject = [];
     /**
@@ -53,11 +69,25 @@ export default {
 
       this.$store.state.loadingGifShow = false;
     }
+  },
+  methods : {
   }
 }
 </script>
 
 <style scoped>
+.inputDiv {
+  padding-top: 6em;
+}
+
+#breedQuestion {
+  margin-right: 1em;
+}
+
+#inputNum {
+  text-align: center;
+}
+
 div {
   display: flex;
   justify-content: center;

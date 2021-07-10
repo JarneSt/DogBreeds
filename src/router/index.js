@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import SearchComponent from "../components/SearchComponent";
 import About from "../views/About";
 import Search from "../views/Search";
 
@@ -19,8 +18,7 @@ const routes = [
     path: '/about',
     name: 'about',
     component: About
-  }
-
+  },
 ]
 
 const router = createRouter({

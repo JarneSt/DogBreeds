@@ -10,7 +10,6 @@
         <img :src="dogObject[0].image.url" class="card-img-top" alt="...">
         <div class="card-body">
           <h2 class="card-title"><b>{{dogObject[0].name}}</b></h2>
-          <p class="card-text">{{dogObject[0].description}}</p>
           <h5 class="card-title">Temperament</h5>
           <p class="card-text">{{dogObject[0].temperament}}</p>
           <h5 class="card-title">Life Span</h5>
@@ -19,42 +18,7 @@
           <p class="card-text">{{dogObject[0].weight.metric}} kg</p>
           <h5 class="card-title">Height</h5>
           <p class="card-text">{{dogObject[0].height.metric}} cm</p>
-          <div class="d-flex flex-column dogBtns">
-            <a v-if="searchArray.length > 0" href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">More Pictures</a>
-            <a href="#" class="btn btn-danger">More Information</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Modal -->
-  <div v-if="dogObject.length > 0" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">More pictures</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="container px-4">
-            <div class="row gx-5">
-              <div v-for="img in searchArray" class="imgalign">
-                <div class="col">
-                  <div class="p-3 border imgbg">
-                    <img :alt="img.name" :src="img.image">
-                    <input style="padding: 5px; margin-top: 20px" type="button" @click="downloadImage(img.image)" value="Download">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button @click="breedOtherImages">Renew</button>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <a class="btn btn-danger" :href="`https://nl.wikipedia.org/wiki/${dogObject[0].name}`" target="_blank">Wikipedia</a>
         </div>
       </div>
     </div>
@@ -91,21 +55,19 @@ export default {
     },
     async breedOtherImages(){
       /**
-       * IF OTHER OPTION IS SELECTED, THIS FUNCTION WILL EXECUTE
-       */
-
-
-      let selectedDogObj = {};
-      selectedDogObj = this.$store.state.dogsArr.filter(dogsArr => dogsArr.name === this.selectedValue);
-      this.dogObject = (selectedDogObj);
-      console.log(this.dogObject);
-
-
-
-      /**
        * CLEARING SEARCH ARRAY SO WE DO NOT APPEND RESULTS OF PREVIOUS SEARCH RESULTS
        */
       this.searchArray = [];
+
+      console.log('Dogs Array',this.$store.state.dogsArr);
+      let selectedDogObj = {};
+      selectedDogObj = this.$store.state.dogsArr.filter(dogsArr => dogsArr.name === this.selectedValue);
+      this.dogObject = (selectedDogObj);
+      console.log('Dog Object',this.dogObject);
+
+
+
+
 
 
 
@@ -113,13 +75,21 @@ export default {
        * SHOW IMAGES OF SELECTED BREED (OPTIONAL)
        */
 
-      let userInput = this.selectedValue;
+      /*
+
+      let userInput = this.dogObject[0].name;
       let dogUrl = `https://dog.ceo/api/breed/${userInput.toLowerCase()}/images/random`;
       let dogObject;
 
       this.$store.state.loadingGifShow = true;
 
-      let response = await fetch(dogUrl);
+      let response;
+      try {
+        response = await fetch(dogUrl);
+      }catch (e) {
+        console.log(e);
+      }
+
       if (response.status === 200){
         for (let i = 0; i < 20; i++)
         {
@@ -148,6 +118,14 @@ export default {
 
 
       console.log('searchArray',this.searchArray);
+
+
+      let a = document.createElement('a');
+      a.className = 'btn btn-danger';
+      a.href = `https://nl.wikipedia.org/wiki/${dogObject[0].name}`;
+
+      document.querySelector('.wikipediaBtn').appendChild(a);
+      */
 
     }
   },
@@ -217,21 +195,36 @@ export default {
 </script>
 
 <style scoped>
+h5.card-title {
+  font-weight: bold;
+}
+
+
+/*
+img {
+  width: 50%;
+  margin: auto;
+}
+
+ */
+
+.form {
+  width: 75%;
+}
+
+
 .imgalign {
   margin-top: auto;
   margin-bottom: auto;
 }
 
-.modal-dialog {
-  max-width: 85%;
-}
 
 .dogBtns a {
   margin-top: 5px;
 }
 
 .dog-selector {
-  width: 34em;
+  width: 24em;
   text-align: center;
 }
 
@@ -249,9 +242,6 @@ export default {
 
 .form {
   padding: 25px;
-}
-.row>* {
-  width: 50% !important;
 }
 
 .card {
@@ -278,10 +268,41 @@ button {
   padding: 11px;
 }
 
+.row>* {
+  width: 50% !important;
+}
+
 @media only screen and (min-width: 1400px){
   .p-3 {
     max-width: 50%;
   }
 
 }
+
+@media only screen and (min-width: 750px){
+  .modal-dialog {
+    max-width: 50%;
+  }
+}
+
+@media only screen and (max-width: 500px){
+  .dog-selector {
+    width: inherit;
+  }
+
+  .cardDiv{
+    width: 59%;
+    margin: auto;
+  }
+
+  .modal-dialog {
+    max-width: inherit;
+  }
+
+  .modal-footer {
+    justify-content: center;
+  }
+}
+
+
 </style>
