@@ -213,6 +213,7 @@ img {
 }
 
 
+
 .imgalign {
   margin-top: auto;
   margin-bottom: auto;
