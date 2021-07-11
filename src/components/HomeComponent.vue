@@ -52,7 +52,7 @@
     <h5>Search breed</h5>
 
     <div class="input-group mb-3 inputBreedDiv">
-      <input class="form-control" id="searchDog" placeholder="breed" aria-label="Breed" v-model="searchedDog" v-on:input="showSearchedDog($event)" style="text-align: center">
+      <input class="form-control" id="searchDog" placeholder="breed" aria-label="Breed" v-model="searchedDog" style="text-align: center">
     </div>
 
 
@@ -72,9 +72,9 @@
 
 
 
-    <div class="container" v-if="currentSelectedDog.length > 0"  style="padding: 20px">
+    <div class="container" v-if="filteredDogos.length > 0"  style="padding: 20px">
       <div class="row align-items-start">
-        <div class="col" v-for="dog in currentSelectedDog">
+        <div class="col" v-for="dog in filteredDogos">
           <img :src="dog.image.url">
           <p>{{dog.name}}</p>
           <a class="btn btn-danger" :href="`https://nl.wikipedia.org/wiki/${dog.name}`" target="_blank">Information</a>
@@ -113,10 +113,14 @@ export default {
       }
     }
   },
-  mounted() {
-    this.showSearchedDog();
-  },
   computed : {
+    filteredDogos() {
+      if (!this.searchedDog) return this.$store.state.dogsArr;
+
+      return this.$store.state.dogsArr.filter(dogsArr =>
+          (dogsArr.name.toLowerCase()).includes(this.searchedDog.toLowerCase())
+      );
+    },
     dogs(){
       return this.$store.state.dogsArr;
     },
