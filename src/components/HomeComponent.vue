@@ -1,83 +1,42 @@
 <template>
-  <div v-if="loadingGif">
+  <div v-if="loadingGif" class="loadingGif">
     <img src="../assets/loadingGif.gif" />
     <h2>Loading ...</h2>
   </div>
   <div v-else>
-    <h1 id="allBreedTitle"><b>All breeds</b></h1>
-    <hr>
 
-    <!--
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators"  class="active activeRectangle"
-                aria-current="true" ></button>
-        <div v-for="(dog,index) in dogs">
-          <button class="slideRectangles" type="button" data-bs-target="#carouselExampleIndicators" :data-bs-slide-to="`${index}`"
-                   :aria-label="`Slide ${index}`"></button>
-        </div>
-      </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="../assets/shutterstock_1290320698.webp" />
-        </div>
-        <div class="carousel-item dogImgs" v-for="dog in dogs">
-          <h1>{{dog.name}}</h1>
-          <img :src="dog.image.url" class="d-block w-100"/>
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" title="Previous dog" data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" title="Next dog" data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-    -->
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Search breed</h5>
-
-    <div class="input-group mb-3 inputBreedDiv">
-      <input class="form-control" id="searchDog" placeholder="breed" aria-label="Breed" v-model="searchedDog" style="text-align: center">
-    </div>
-
-
-    <!--
-    <div class="d-flex flex-wrap">
-      <div v-if="currentSelectedDog.length > 0" style="padding: 20px" v-for="dog in currentSelectedDog">
-        <div class="col">
-          <img :src="dog.image.url">
-          <p>{{dog.name}}</p>
-          <a class="btn btn-danger" :href="`https://nl.wikipedia.org/wiki/${dog.name}`" target="_blank">Information</a>
+    <!--Header-->
+    <div class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex text">
+        <div class="toast-body">
+          <b>All breeds</b>
         </div>
       </div>
     </div>
-    -->
+
+
+    <!--Breed search-->
+    <div class="breedSearchFullDiv">
+      <h5>Search breed</h5>
+      <div class="input-group mb-3 inputBreedDiv">
+        <input class="form-control" id="searchDog" placeholder="breed" aria-label="Breed" v-model="searchedDog" style="text-align: center">
+      </div>
+    </div>
 
 
 
-
-
-    <div class="container" v-if="filteredDogos.length > 0"  style="padding: 20px">
+    <!--Renders searched dogs-->
+    <div class="container" v-if="filteredDogos.length > 0">
       <div class="row align-items-start">
         <div class="col" v-for="dog in filteredDogos">
-          <img :src="dog.image.url">
-          <p>{{dog.name}}</p>
-          <a class="btn btn-danger" :href="`https://nl.wikipedia.org/wiki/${dog.name}`" target="_blank">Information</a>
+          <div class="fullDogDiv">
+            <img :src="dog.image.url">
+            <p>{{dog.name}}</p>
+            <div class="flex-column d-flex m-auto dogBtns" >
+              <a class="btn" :href="`https://nl.wikipedia.org/wiki/${dog.name}`" target="_blank">Information</a>
+              <a class="btn" :href="`https://nl.wikipedia.org/wiki/${dog.name}`" target="_blank">Wikipedia</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -93,24 +52,6 @@ export default {
     return {
       searchedDog : '',
       currentSelectedDog : []
-    }
-  },
-  methods : {
-    showSearchedDog(){
-      let selectedDogArray = [];
-
-      let filteredDogArrayByName = this.dogs.filter(dogsArr => (dogsArr.name.toLowerCase()).includes(this.searchedDog.toLowerCase()));
-
-      if (this.searchedDog === ''){
-        //Show all dogs if input is empty
-        selectedDogArray = this.dogs;
-        this.currentSelectedDog = (selectedDogArray);
-      }
-      else{
-        //Show dogs that include user input
-        selectedDogArray = filteredDogArrayByName;
-        this.currentSelectedDog = (selectedDogArray);
-      }
     }
   },
   computed : {
@@ -133,32 +74,43 @@ export default {
 
 <style scoped>
 
+.text {
+  font-size: 23px;
+}
+.toast:not(.showing):not(.show) {
+  opacity: inherit;
+}
+
+.toast {
+  width: 100%;
+  background: #e75870;
+}
+
+.toast-body {
+  margin: auto;
+}
+
+.toast-body b {
+  font-size: 2rem;
+}
+
 .inputBreedDiv {
   margin: auto;
   width: 60%;
 }
 
-.slideRectangles, .activeRectangle {
-  display: none;
-}
-.dogImgs {
-}
 
 .col {
-  flex: 1 0 40% !important;
+  flex: 1 0 10% !important;
   margin-bottom: 30px;
-  padding: 2em;
+  padding: 10px;
+  border-bottom: 1px solid lightgray;
 }
 
 img {
   height: 10% !important;
   width: 30% !important;
   margin: auto;
-}
-
-#allBreedTitle {
-  padding: 25px;
-  color: #ed889c;
 }
 
 
@@ -184,11 +136,46 @@ img {
   border-radius: 10px 10px 10px 10px;
 }
 
+.breedSearchFullDiv {
+  margin-top: 3em;
+}
+
+.loadingGif {
+
+}
+
+.btn {
+  background: #e6e6e6 !important;
+  color: black;
+}
+
+.dogBtns {
+  width: 20em;
+}
+
+.dogBtns a {
+  margin-bottom: 5px;
+}
+
+.fullDogDiv{
+  /*
+  box-shadow: 0 0 4px 0 #444444;
+
+   */
+  border-radius: 20px 20px 20px 20px;
+  min-height: 30em;
+  display: flex;
+  flex-direction: column;
+}
+
+.fullDogDiv p {
+  font-size: 25px;
+}
+
 @media only screen and (max-width: 1000px){
   img {
     width: 69% !important;
   }
-
 }
 
 @media only screen and (min-width: 900px){

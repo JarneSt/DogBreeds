@@ -86,6 +86,7 @@ box-shadow: 0 0 4px 0 crimson;
 #somedogs {
   width: 100%;
   text-align: right;
+  font-size: 17px !important;
 }
 
 #somedogs a{
@@ -106,6 +107,10 @@ box-shadow: 0 0 4px 0 crimson;
 
   #logo {
     display: none;
+  }
+
+  #somedogs {
+    font-size: 12px !important;
   }
 
 }
